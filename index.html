@@ -1,9 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/lodash/dist/lodash.min.js"></script>
+	<script src="bower_components/handlebars/handlebars.min.js"></script>
+	<script src="main.js"></script>
 	<title></title>
+	<style> 
+	#input-task, #input-description {
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+
+	#table-cont {
+		width: 600px;
+	}
+
+	.toolbar {
+		margin: 15px;
+	}
+	</style>
 </head>
 <body>
+
+	<div class="toolbar">
+		<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+		  Add new task
+		</button>
+
+		<button class="btn btn-primary" data-toggle="modal" data-target="#settingsModal">
+		  Settings
+		</button>
+	</div>
+
+	<div id="table-cont">
+		<table class="table table-hover table-bordered table-striped" >
+			<thead>
+				<tr>
+					<th>Task</th>
+					<th>Date</th>
+					<th>Starred</th>
+					<th>Options</th>
+				</tr>
+			</thead>
+			<tbody ondrop="drop(event)" ondragover="allowDrop(event)">
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Settings Modal -->
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+	      </div>
+	      <div class="modal-body">
+	      	Settings...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="btn-save-settings" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Add or Edit Task Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Task</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<input id="input-task" type="text" class="form-control" placeholder="Task">
+
+			Deadline: <input id="input-date" type="date" name="bday">
+
+			<textarea id="input-description" class="form-control" rows="3" placeholder="Description"></textarea>
+
+	        <div class="checkbox">
+			   <label>
+			     <input id="input-checkbox" type="checkbox"> Starred
+			   </label>
+			 </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="btn-add-task" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 </body>
 </html>
