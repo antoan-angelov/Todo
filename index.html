@@ -1,155 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<title>ToDo List</title>
-	<style> 
-	#input-task, #input-description {
-		margin-bottom: 10px;
-		margin-top: 10px;
-	}
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <title>ToDo List</title>
+    <style> 
+    #input-task, #input-description {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
 
-	#table-cont {
-		width: 600px;
-		float:left;
-		background: white;
-	}
+    #table-cont {
+        width: 600px;
+        float:left;
+        background: white;
+    }
 
-	#user-info {
-		float:left;
-		width: 240px;
-		height: 260px;
-		text-align: center;
-		margin-left: 15px;
-	}
+    #user-info {
+        float:left;
+        width: 240px;
+        height: 260px;
+        text-align: center;
+        margin-left: 15px;
+    }
 
-	.toolbar {
-		margin: 15px;
-	}
+    .toolbar {
+        margin: 15px;
+    }
 
-	#drop_zone {
-		width: 280px;
-		height: 180px;
-		margin: 0 auto;
-		text-align: center;
-	}
+    #drop_zone {
+        width: 280px;
+        height: 180px;
+        margin: 0 auto;
+        text-align: center;
+    }
 
-	.drop-spot {
-		border: 2px black dashed;
-		padding-top: 70px;
-	}
+    .drop-spot {
+        border: 2px black dashed;
+        padding-top: 70px;
+    }
 
-	#input-username {
-		width: 180px;
-		margin: 10px auto;
-	}
+    #input-username {
+        width: 180px;
+        margin: 10px auto;
+    }
 
-	#color-cont {
-		text-align: center;
-	}
-	.thumb {
-		height: 180px;
-		border: 1px solid #000;
-		margin: 10px 5px 0 0;
-	}
+    #color-cont {
+        text-align: center;
+    }
+    .thumb {
+        height: 180px;
+        border: 1px solid #000;
+        margin: 10px 5px 0 0;
+    }
 
-	#avatar {
-		width: 180px;
-		height: 180px;
-	}
+    #avatar {
+        width: 180px;
+        height: 180px;
+    }
 
-	#username {
-		margin-top: 15px;
-	}
-	</style>
+    #username {
+        margin-top: 15px;
+    }
+    </style>
 </head>
 <body>
 
-	<div class="toolbar">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-		  Add new task
-		</button>
+    <div class="toolbar">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          Add new task
+        </button>
 
-		<button class="btn btn-primary" data-toggle="modal" data-target="#settingsModal">
-		  Settings
-		</button>
-	</div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#settingsModal">
+          Settings
+        </button>
+    </div>
 
-	<div id="table-cont">
-		<table class="table table-hover table-bordered table-striped" >
-			<thead>
-				<tr>
-					<th>Task</th>
-					<th>Date</th>
-					<th>Starred</th>
-					<th>Options</th>
-				</tr>
-			</thead>
-			<tbody ondrop="drop(event)" ondragover="allowDrop(event)">
-			</tbody>
-		</table>
-	</div>
+    <div id="table-cont">
+        <table class="table table-hover table-bordered table-striped" >
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Date</th>
+                    <th>Starred</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody ondrop="drop(event)" ondragover="allowDrop(event)">
+            </tbody>
+        </table>
+    </div>
 
-	<div id="user-info" class="well">
-		<img id="avatar" class="thumb" src="" />
-		<div id="username"></div>
-	</div>
+    <div id="user-info" class="well">
+        <img id="avatar" class="thumb" src="" />
+        <div id="username"></div>
+    </div>
 
-	<!-- Settings Modal -->
-	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Settings</h4>
-	      </div>
-	      <div class="modal-body">
-      		<div class="drop-spot" id="drop_zone">Drop avatar here</div>
-			<output id="list"></output>
-	      	<input id="input-username" type="text" class="form-control" placeholder="Username">
-	      	<div id="color-cont"><label for="bgcolor">Background color:</label> <input type="color" id="bgcolor" name="bgcolor"></div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button id="btn-save-settings" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Settings</h4>
+          </div>
+          <div class="modal-body">
+            <div class="drop-spot" id="drop_zone">Drop avatar here</div>
+            <output id="list"></output>
+            <input id="input-username" type="text" class="form-control" placeholder="Username">
+            <div id="color-cont"><label for="bgcolor">Background color:</label> <input type="color" id="bgcolor" name="bgcolor"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="btn-save-settings" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<!-- Add or Edit Task Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Task</h4>
-	      </div>
-	      <div class="modal-body">
-	      	<input id="input-task" type="text" class="form-control" placeholder="Task">
+    <!-- Add or Edit Task Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Task</h4>
+          </div>
+          <div class="modal-body">
+            <input id="input-task" type="text" class="form-control" placeholder="Task">
 
-			Deadline: <input id="input-date" type="date" name="bday">
+            Deadline: <input id="input-date" type="date" name="bday">
 
-			<textarea id="input-description" class="form-control" rows="3" placeholder="Description"></textarea>
+            <textarea id="input-description" class="form-control" rows="3" placeholder="Description"></textarea>
 
-	        <div class="checkbox">
-			   <label>
-			     <input id="input-checkbox" type="checkbox"> Starred
-			   </label>
-			 </div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button id="btn-add-task" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+            <div class="checkbox">
+               <label>
+                 <input id="input-checkbox" type="checkbox"> Starred
+               </label>
+             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="btn-add-task" type="button" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="bower_components/lodash/dist/lodash.min.js"></script>
-	<script src="main.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
