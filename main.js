@@ -7,8 +7,6 @@ var tasks = JSON.parse(localStorage.getItem("tasks")) || [],
                       "avatar" : null,
                       "bgcolor" : "#ffffff" };
 
-
-
 function applySettings() {
   $("#username").text(settings.name);
   $("body").css({"background" : settings.bgcolor});
@@ -27,8 +25,6 @@ function allowDrop(ev) {
 function drag(ev) {
     ev.dataTransfer.setData("Text", ev.target.id);
 }
-
-
 
 function drop(ev) {
     ev.preventDefault();
@@ -95,6 +91,48 @@ function clearModal() {
   $("#input-date").val("");
   $("#input-checkbox").prop("checked", false);
 }
+
+function setSettingsAvatar(data) {
+  document.getElementById('drop_zone').innerHTML = ['<img class="thumb" src="',
+    data, '">'].join('');
+  $("#drop_zone").removeClass("drop-spot");
+}
+
+function handleFileSelect(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+
+  var files = evt.dataTransfer.files; // FileList object.
+
+  for (var i = 0, f; f = files[i]; i++) {
+
+    // Only process image files.
+    if (!f.type.match('image.*')) {
+      continue;
+    }
+
+    var reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        setSettingsAvatar(e.target.result);
+      };
+    })(f);
+
+    reader.readAsDataURL(f);
+  }
+}
+
+function handleDragOver(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+// Setup the dnd listeners.
+var dropZone = document.getElementById('drop_zone');
+dropZone.addEventListener('dragover', handleDragOver, false);
+dropZone.addEventListener('drop', handleFileSelect, false);
 
 $(function() {
   applySettings();
