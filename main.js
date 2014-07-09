@@ -28,17 +28,20 @@ function drag(ev) {
 
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("Text");
-    ev.target.parentNode.parentNode.insertBefore(document.getElementById(data),
-      ev.target.parentNode);
-    var id1 = ev.target.parentNode.id;
-    var id2 = data;
-    var index1 = getTaskById(id1);
-    var index2 = getTaskById(id2);
-    var t = tasks[index1];
+
+    var data = ev.dataTransfer.getData("Text"),
+      id1 = ev.target.parentNode.id,
+      id2 = data,
+      index1 = getTaskById(id1),
+      index2 = getTaskById(id2),
+      t = tasks[index1];
+
     tasks[index1] = tasks[index2];
     tasks[index2] = t;
-    console.log(id1, id2, index1, index2, JSON.stringify(tasks))
+
+    ev.target.parentNode.parentNode.insertBefore(document.getElementById(data),
+      ev.target.parentNode);
+
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -57,7 +60,13 @@ function getTaskById(id) {
 
 function populateTable() {
   if(tasks) {
-    var list = '<% _.forEach(tasks, function(el, index) { %><tr id=<%- el.id %> draggable=\"true\" ondragstart=\"drag(event)\"><td><%- el.name %></td><td><%- el.date %></td><td><%- el.starred %></td><td><button type="button" class=\"btn btn-primary btn-more-info\" data-toggle=\"modal\" data-id=<%- el.id %> data-target=\"#myModal\">info</button> <button type="button" data-id=<%- el.id %> class=\"btn btn-primary btn-done\">done</button></td></tr><% }); %>';
+    var list = '<% _.forEach(tasks, function(el, index) { %><tr id=<%- el.id %>'
+      + ' draggable=\"true\" ondragstart=\"drag(event)\"><td><%- el.name %></td>'
+      + '<td><%- el.date %></td><td><%- el.starred %></td><td><button '
+      + 'type="button" class=\"btn btn-primary btn-more-info\" '
+      + 'data-toggle=\"modal\" data-id=<%- el.id %> data-target=\"#myModal\">'
+      + 'info</button> <button type="button" data-id=<%- el.id %> '
+      + 'class=\"btn btn-primary btn-done\">done</button></td></tr><% }); %>';
     var html = _.template(list, { 'tasks': tasks });
     $(".table tbody").html(html);
   }
@@ -160,11 +169,11 @@ $(function() {
   });
 
   $("#btn-add-task").click(function() {
-    var taskName = $("#input-task").val();
-    var taskDescription = $("#input-description").val();
-    var taskDate = $("#input-date").val();
-    var taskStarred = $("#input-checkbox").prop("checked") ? "Starred" : "Not Starred";
-    var task;
+    var taskName = $("#input-task").val(),
+        taskDescription = $("#input-description").val(),
+        taskDate = $("#input-date").val(),
+        taskStarred = $("#input-checkbox").prop("checked") ? "Starred" : "Not Starred",
+        task;
 
     if(workingId == -1) {
       task = {
