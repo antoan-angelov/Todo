@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="bower_components/lodash/dist/lodash.min.js"></script>
-	<script src="bower_components/handlebars/handlebars.min.js"></script>
 	<script src="main.js"></script>
 	<title></title>
 	<style> 
@@ -17,10 +16,55 @@
 
 	#table-cont {
 		width: 600px;
+		float:left;
+		background: white;
+	}
+
+	#user-info {
+		float:left;
+		width: 240px;
+		height: 260px;
+		text-align: center;
+		margin-left: 15px;
 	}
 
 	.toolbar {
 		margin: 15px;
+	}
+
+	#drop_zone {
+		width: 280px;
+		height: 180px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.drop-spot {
+		border: 2px black dashed;
+		padding-top: 70px;
+	}
+
+	#input-username {
+		width: 180px;
+		margin: 10px auto;
+	}
+
+	#color-cont {
+		text-align: center;
+	}
+	.thumb {
+		height: 180px;
+		border: 1px solid #000;
+		margin: 10px 5px 0 0;
+	}
+
+	#avatar {
+		width: 180px;
+		height: 180px;
+	}
+
+	#username {
+		margin-top: 15px;
 	}
 	</style>
 </head>
@@ -51,6 +95,11 @@
 		</table>
 	</div>
 
+	<div id="user-info" class="well">
+		<img id="avatar" class="thumb" src="" />
+		<div id="username"></div>
+	</div>
+
 	<!-- Settings Modal -->
 	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -60,7 +109,10 @@
 	        <h4 class="modal-title" id="myModalLabel">Settings</h4>
 	      </div>
 	      <div class="modal-body">
-	      	Settings...
+      		<div class="drop-spot" id="drop_zone">Drop avatar here</div>
+			<output id="list"></output>
+	      	<input id="input-username" type="text" class="form-control" placeholder="Username">
+	      	<div id="color-cont"><label for="bgcolor">Background color:</label> <input type="color" id="bgcolor" name="bgcolor"></div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -98,6 +150,65 @@
 	    </div>
 	  </div>
 	</div>
+
+	<script>
+	function setSettingsAvatar(data) {
+		document.getElementById('drop_zone').innerHTML = ['<img class="thumb" src="', 
+	      		data, '">'].join('');
+	      $("#drop_zone").removeClass("drop-spot");
+	    //  console.log("setSettingsAvatar", ['<img class="thumb" src="', data, '">'].join(''));
+	}
+
+	  function handleFileSelect(evt) {
+	    evt.stopPropagation();
+	    evt.preventDefault();
+
+	    var files = evt.dataTransfer.files; // FileList object.
+
+	    // files is a FileList of File objects. List some properties.
+	    var output = [];
+	    for (var i = 0, f; f = files[i]; i++) {
+
+	    	// Only process image files.
+			if (!f.type.match('image.*')) {
+				continue;
+			}
+
+			var reader = new FileReader();
+
+		      // Closure to capture the file information.
+		      reader.onload = (function(theFile) {
+		        return function(e) {
+		          // Render thumbnail.
+		          //var span = document.createElement('span');
+		          setSettingsAvatar(e.target.result);
+
+		          //document.getElementById('list').insertBefore(span, null);
+		        };
+		      })(f);
+
+		      // Read in the image file as a data URL.
+		      reader.readAsDataURL(f);
+
+	      /*output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+	                  f.size, ' bytes, last modified: ',
+	                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+	                  '</li>');*/
+	    }
+	    //document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	  }
+
+	  function handleDragOver(evt) {
+	    evt.stopPropagation();
+	    evt.preventDefault();
+	    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+	  }
+
+	  // Setup the dnd listeners.
+	  var dropZone = document.getElementById('drop_zone');
+	  dropZone.addEventListener('dragover', handleDragOver, false);
+	  dropZone.addEventListener('drop', handleFileSelect, false);
+	</script>
 
 </body>
 </html>

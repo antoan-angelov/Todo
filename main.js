@@ -1,7 +1,24 @@
 "use strict";
 
-var tasks = JSON.parse(localStorage.getItem("tasks")),
-    workingId = -1;
+var tasks = JSON.parse(localStorage.getItem("tasks")) || [],
+    workingId = -1,
+    settings = JSON.parse(localStorage.getItem("settings"))
+                || {  "name" : "Unnamed",
+                      "avatar" : null,
+                      "bgcolor" : "#ffffff" };
+
+
+
+function applySettings() {
+  $("#username").text(settings.name);
+  $("body").css({"background" : settings.bgcolor});
+  $("#bgcolor").val(settings.bgcolor);
+  $("#input-username").val(settings.name);
+  if(settings.avatar) {
+    setSettingsAvatar(settings.avatar);
+    $("#avatar").attr("src", settings.avatar);
+  }
+}
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -10,6 +27,8 @@ function allowDrop(ev) {
 function drag(ev) {
     ev.dataTransfer.setData("Text", ev.target.id);
 }
+
+
 
 function drop(ev) {
     ev.preventDefault();
@@ -50,7 +69,6 @@ function populateTable() {
   $(".btn-done").click(function() {
     var id = $(this).data("id");
     var ii = getTaskById(id);
-    console.log("ASD", id, ii);
     tasks.splice(ii, 1);
     localStorage.setItem("tasks", JSON.stringify(tasks));
     populateTable();
@@ -79,7 +97,7 @@ function clearModal() {
 }
 
 $(function() {
-
+  applySettings();
   populateTable();
 
   $('#myModal').on('hidden.bs.modal', function() {
@@ -87,16 +105,27 @@ $(function() {
       workingId = -1;
   });
 
+  $("#btn-save-settings").click(function() {
+
+    var username = $("#input-username").val();
+    settings.name = username;
+
+    var color = $("#bgcolor").val();
+    settings.bgcolor = color;
+    $("body").css({ "background" : color });
+
+    var avatarData = $(".thumb").first().attr("src");
+    settings.avatar = avatarData;
+
+    applySettings();
+    localStorage.setItem("settings", JSON.stringify(settings));
+  });
+
   $("#btn-add-task").click(function() {
-    console.log("add-task");
     var taskName = $("#input-task").val();
     var taskDescription = $("#input-description").val();
     var taskDate = $("#input-date").val();
     var taskStarred = $("#input-checkbox").prop("checked") ? "Starred" : "Not Starred";
-
-    var arr = localStorage.getItem("tasks") ?
-                JSON.parse(localStorage.getItem("tasks")) : [];
-
     var task;
 
     if(workingId == -1) {
@@ -107,17 +136,16 @@ $(function() {
         "date" : taskDate,
         "starred" : taskStarred
       };
-      arr.push(task);
+      tasks.push(task);
     }
     else {
-      task = arr[workingId];
+      task = tasks[workingId];
       task.name = taskName;
       task.description = taskDescription;
       task.date = taskDate;
       task.starred = taskStarred;
     }
 
-    tasks = arr;
     localStorage.setItem("tasks", JSON.stringify(tasks));
     populateTable();
   });
