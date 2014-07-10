@@ -36,6 +36,9 @@ function drop(ev) {
       index2 = getTaskById(id2),
       t = tasks[index1];
 
+    if($("#"+data).prop("tagName") != "tr")
+      return;
+
     tasks[index1] = tasks[index2];
     tasks[index2] = t;
 
@@ -101,6 +104,17 @@ function clearModal() {
   $("#input-checkbox").prop("checked", false);
 }
 
+function clearSettingsModal() {
+  $("#input-username").val("");
+  $("#bgcolor").val("");
+  var $image = $("#drop_zone img");
+  if($image.length) {
+    $image.attr("src", "");
+    $("#drop_zone").addClass("drop-spot");
+    $("#drop_zone").text("Drop avatar here");
+  }
+}
+
 function setSettingsAvatar(data) {
   document.getElementById('drop_zone').innerHTML = ['<img class="thumb" src="',
     data, '">'].join('');
@@ -150,6 +164,10 @@ $(function() {
   $('#myModal').on('hidden.bs.modal', function() {
       clearModal();
       workingId = -1;
+  });
+
+  $('#settingsModal').on('hidden.bs.modal', function() {
+      clearSettingsModal();
   });
 
   $("#btn-save-settings").click(function() {
