@@ -36,7 +36,7 @@ function drop(ev) {
       index2 = getTaskById(id2),
       t = tasks[index1];
 
-    if($("#"+data).prop("tagName") != "tr")
+    if($("#"+data).prop("tagName") != "TR")
       return;
 
     tasks[index1] = tasks[index2];
