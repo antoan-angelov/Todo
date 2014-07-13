@@ -23,29 +23,32 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-
-    ev.originalEvent.dataTransfer.setData("Text", ev.target.id);
+  ev.originalEvent.dataTransfer.setData("Text", ev.target.id);
 }
 
 function drop(ev) {
-    ev.preventDefault();
+  ev.preventDefault();
 
-    var data = ev.originalEvent.dataTransfer.getData("Text"),
-      id1 = ev.target.parentNode.id,
-      id2 = data,
-      index1 = getTaskById(id1),
-      index2 = getTaskById(id2),
-      t = tasks[index1];
+  var data = ev.originalEvent.dataTransfer.getData("Text"),
+    id1 = ev.target.parentNode.id,
+    id2 = data,
+    index1 = getTaskById(id1),
+    index2 = getTaskById(id2);
 
-    if($("#"+data).prop("tagName") != "TR")
-      return;
+  if($("#"+data).prop("tagName") != "TR")
+    return;
 
-    tasks[index1] = tasks[index2];
-    tasks[index2] = t;
+  insertBefore(index2, index1, tasks);
 
-    $("#"+data).insertBefore($(ev.target).parent());
+  $("#"+data).insertBefore($(ev.target).parent());
 
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function insertBefore(what, beforeWhat, tasks) {
+  for(var i = tasks.length-1; i>beforeWhat; i--)
+    tasks[i] = tasks[i-1];
+  tasks[beforeWhat] = tasks[what];
 }
 
 function getTaskById(id) {
