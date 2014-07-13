@@ -88,7 +88,7 @@
                     <th>Options</th>
                 </tr>
             </thead>
-            <tbody ondrop="drop(event)" ondragover="allowDrop(event)">
+            <tbody>
             </tbody>
         </table>
     </div>
@@ -151,7 +151,7 @@
 
     <script id="row-template" type="text/x-handlebars-template">
     {{#each tasks}}
-    <tr id="{{id}}" draggable="true" ondragstart="drag(event)">
+    <tr id="{{id}}" draggable="true" >
       <td>{{name}}</td>
       <td>{{date}}</td>
       <td>{{starred}}</td>

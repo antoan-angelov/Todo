@@ -23,13 +23,14 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("Text", ev.target.id);
+
+    ev.originalEvent.dataTransfer.setData("Text", ev.target.id);
 }
 
 function drop(ev) {
     ev.preventDefault();
 
-    var data = ev.dataTransfer.getData("Text"),
+    var data = ev.originalEvent.dataTransfer.getData("Text"),
       id1 = ev.target.parentNode.id,
       id2 = data,
       index1 = getTaskById(id1),
@@ -42,8 +43,7 @@ function drop(ev) {
     tasks[index1] = tasks[index2];
     tasks[index2] = t;
 
-    ev.target.parentNode.parentNode.insertBefore(document.getElementById(data),
-      ev.target.parentNode);
+    $("#"+data).insertBefore($(ev.target).parent());
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
@@ -84,6 +84,18 @@ function populateTable() {
     workingId = taskId;
     populateModal(tasks[taskId]);
   });
+
+  $('#table-cont table tbody tr').on('dragstart', function(evt) {
+    drag(evt);
+  });
+
+  $('#table-cont table tbody').on('drop', function(evt) {
+    drop(evt);
+  });
+
+  $('#table-cont table tbody').on('dragover', function(evt) {
+    allowDrop(evt);
+  });
 }
 
 function populateModal(task) {
@@ -106,22 +118,24 @@ function clearSettingsModal() {
   var $image = $("#drop_zone img");
   if($image.length) {
     $image.attr("src", "");
-    $("#drop_zone").addClass("drop-spot");
-    $("#drop_zone").text("Drop avatar here");
+    var $drop_zone = $("#drop_zone");
+    $drop_zone.addClass("drop-spot");
+    $drop_zone.text("Drop avatar here");
   }
 }
 
 function setSettingsAvatar(data) {
-  document.getElementById('drop_zone').innerHTML = ['<img class="thumb" src="',
-    data, '">'].join('');
-  $("#drop_zone").removeClass("drop-spot");
+  var $drop_zone = $("#drop_zone");
+  $drop_zone.html(['<img class="thumb" src="',
+    data, '">'].join(''));
+  $drop_zone.removeClass("drop-spot");
 }
 
 function handleFileSelect(evt) {
   evt.stopPropagation();
   evt.preventDefault();
 
-  var files = evt.dataTransfer.files; // FileList object.
+  var files = evt.originalEvent.dataTransfer.files; // FileList object.
 
   for (var i = 0, f; f = files[i]; i++) {
 
@@ -145,13 +159,13 @@ function handleFileSelect(evt) {
 function handleDragOver(evt) {
   evt.stopPropagation();
   evt.preventDefault();
-  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  evt.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
 // Setup the dnd listeners.
-var dropZone = document.getElementById('drop_zone');
-dropZone.addEventListener('dragover', handleDragOver, false);
-dropZone.addEventListener('drop', handleFileSelect, false);
+var $dropZone = $('#drop_zone');
+$dropZone.on('dragover', handleDragOver);
+$dropZone.on('drop', handleFileSelect);
 
 $(function() {
   applySettings();
