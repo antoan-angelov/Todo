@@ -63,14 +63,10 @@ function getTaskById(id) {
 
 function populateTable() {
   if(tasks) {
-    var list = '<% _.forEach(tasks, function(el, index) { %><tr id=<%- el.id %>'
-      + ' draggable=\"true\" ondragstart=\"drag(event)\"><td><%- el.name %></td>'
-      + '<td><%- el.date %></td><td><%- el.starred %></td><td><button '
-      + 'type="button" class=\"btn btn-primary btn-more-info\" '
-      + 'data-toggle=\"modal\" data-id=<%- el.id %> data-target=\"#myModal\">'
-      + 'info</button> <button type="button" data-id=<%- el.id %> '
-      + 'class=\"btn btn-primary btn-done\">done</button></td></tr><% }); %>';
-    var html = _.template(list, { 'tasks': tasks });
+    var source   = $("#row-template").html();
+    var template = Handlebars.compile(source);
+    var context = {"tasks" : tasks};
+    var html    = template(context);
     $(".table tbody").html(html);
   }
 

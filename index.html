@@ -149,9 +149,23 @@
       </div>
     </div>
 
+    <script id="row-template" type="text/x-handlebars-template">
+    {{#each tasks}}
+    <tr id="{{id}}" draggable="true" ondragstart="drag(event)">
+      <td>{{name}}</td>
+      <td>{{date}}</td>
+      <td>{{starred}}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-more-info" data-toggle="modal" data-id={{id}} data-target="#myModal">info</button>
+        <button type="button" data-id={{id}} class="btn btn-primary btn-done">done</button>
+      </td>
+    </tr>
+    {{/each}}
+  </script>
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="bower_components/handlebars/handlebars.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
